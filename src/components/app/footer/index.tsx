@@ -1,4 +1,4 @@
-export default function AppFooter() {
+export function AppFooter() {
     return (
       <footer className="w-full flex flex-col items-center z-0 bg-cyan-400 py-3 flex-shrink-0 mt-auto print:hidden">
         <div className="container d-flex flex-column align-items-center">

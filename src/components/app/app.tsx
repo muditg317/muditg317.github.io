@@ -1,10 +1,10 @@
 // import React, { useContext, useCallback, useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import AppHeader from './header';
-import AppFooter from './footer';
+import {AppHeader} from './header';
+import {AppFooter} from './footer';
 
-import Landing from 'components/landing';
+import {Landing} from 'components/landing';
 
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -15,8 +15,7 @@ library.add(fas, far, fab);
 
 require('./hacks');
 
-
-export default function App() {
+export function App() {
   return (
     <div className='h-full flex flex-col' id='app'>
       <Helmet>

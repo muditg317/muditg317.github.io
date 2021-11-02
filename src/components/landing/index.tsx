@@ -11,7 +11,7 @@ const fabLinkedIn: IconProp = ['fab','linkedin'];
 
 
 
-export default function Landing() {
+export function Landing() {
   return <div className="bg-cyan-100 h-full flex flex-col items-center">
     <div className="p-5 w-full max-w-3xl">
       <div className="rounded-md shadow-md bg-white p-5 flex flex-col items-center">

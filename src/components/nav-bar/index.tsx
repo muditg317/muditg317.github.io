@@ -5,12 +5,12 @@ import {ReactComponent as Logo} from 'assets/images/logo.svg';
 import { ExternalLink } from 'components/external-link';
 
 
-export default function NavBar() {
+export function NavBar() {
   const [ responsive, setResponsive ] = useState(false);
   const navBarRef = useRef(null);
 
   useEffect(() => {
-    const documentClickHandler = (event: MouseEvent) => {
+    function documentClickHandler(event: MouseEvent) {
       if (responsive && navBarRef.current && event.target !== navBarRef.current) {
         setResponsive(false);
       }
@@ -34,7 +34,7 @@ export default function NavBar() {
       </div>
       <div className={`w-full ${responsive ? "block z-50" : "hidden"} flex-grow md:flex md:items-center md:w-auto bg-cyan-500 absolute md:relative top-full md:top-0 -ml-3 md:ml-0 p-3 md:p-0 pt-0`}>
         <div className="text-sm md:flex-grow">
-          <ExternalLink to="https://muditgupta.appspot.com/game-lounge" className="block mt-4 mb-4 md:mb-0 md:inline-block md:mt-0 text-white font-semibold text-xl hover:text-green-400 mr-4">
+          <ExternalLink to="https://muditgupta.appspot.com/game-lounge" title="Games" className="block mt-4 mb-4 md:mb-0 md:inline-block md:mt-0 text-white font-semibold text-xl hover:text-green-400 mr-4">
             Games
           </ExternalLink>
         </div>
