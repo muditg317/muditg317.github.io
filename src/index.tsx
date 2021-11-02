@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './assets/styles/index.css';
 
 import { StateProvider } from 'state-management';
-import App from 'components/app';
+import {App} from 'components/app';
 
 
 ReactDOM.render(

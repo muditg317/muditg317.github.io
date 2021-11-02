@@ -1,5 +1,8 @@
+
+// import type {ElementOf} from '../utils/types';
 import { AllSources as AllPageSources, filtered as filteredPages } from "./pages";
-import { AllSources as AllRedirectSources, filtered as filteredRedirects } from "./redirects";
+import type {AllSources as AllRedirectSources } from './redirects';
+import {filtered as filteredRedirects} from "./redirects";
 
 type SourceSources = {
   pages: AllPageSources;
@@ -19,10 +22,10 @@ type AllReused = { [K in Key]: ReusedSourcesFrom<K> }[Key];
 type ShouldNotBeNever = AllReused extends never ? any : never;
 const assertion: ShouldNotBeNever = null;
 
-// const navPages = Object.entries(filteredPages<NavPage>("showOnNavBar"));
-// const navRedirects = Object.entries(filteredRedirects("showOnNavBar"));
+const navPages = Object.entries(filteredPages("showOnNavBar")).map(pair => pair[1]);
+const navRedirects = filteredRedirects("showOnNavBar", true);
 
-// const navEntries = [...navPages, ...navRedirects] as const;
+const navEntries = [...navPages, ...navRedirects] as const;
 // const navs = Object.fromEntries(navEntries);
 
 // const navItems = Object.assign({}, filteredPages("showOnNavBar"), filteredRedirects("showOnNavBar"));

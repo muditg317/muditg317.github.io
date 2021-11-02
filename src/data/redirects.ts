@@ -1,4 +1,5 @@
-import {ElementOf, IndicesOf} from 'utils/types';
+import {AllUnionMemberKeys, ElementOf, IndicesOf, TuplifyUnion} from 'utils/types';
+import {arrayAsReadonly} from 'utils/type-modifiers';
 
 type CapitalLetter = 'A'|'B'|'C'|'D'|'E'|'F'|'G'|'H'|'I'|'J'|'K'|'L'|'M'|'N'|'O'|'P'|'Q'|'R'|'S'|'T'|'U'|'V'|'W'|'X'|'Y'|'Z';
 
@@ -8,24 +9,19 @@ type InvalidRedirectsFrom<T extends string> = T extends Exclude<T, MultiWord|Emp
 type CapitalizedString = `${CapitalLetter}${string}`;
 
 
-interface Redirect<T extends string = string> {
-  readonly aliases: T[];
-  readonly longName: CapitalizedString;
-  readonly target: URL;
-  readonly showOnNavBar: boolean;
-}
+type Redirect = Readonly<Required<{
+  aliases: string[];
+  longName: CapitalizedString;
+  target: URL;
+  showOnNavBar: boolean;
+}>>;
 
-type NavRedir<T extends string> = Redirect<T> & {
-  readonly showOnNavBar: true;
-}
-
-const REDIRECTS = [
+export const REDIRECTS = [
   ({
     aliases: ['mungus', 'mungus-irl','among-us','amongus'],
     longName: "Mungus-IRL",
     target: new URL('http://mungus.mudit.tech'),
     showOnNavBar: false,
-    hello: 5,
   }),
   ({
     aliases: ['games', 'game-lounge'],
@@ -37,10 +33,11 @@ const REDIRECTS = [
 
 
 //********Exclude duplicates from alias lists********/
-type RedirectIndex = IndicesOf<typeof REDIRECTS>;
+type REDIRECTS_type = typeof REDIRECTS;
+type RedirectIndex = IndicesOf<REDIRECTS_type>;
 type OtherRedirectIndices = { [T in RedirectIndex]: Exclude<RedirectIndex, T> };
 
-type RedirectSources = { [T in RedirectIndex]: ElementOf<typeof REDIRECTS[T]['aliases']> };
+type RedirectSources = { [T in RedirectIndex]: ElementOf<REDIRECTS_type[T]['aliases']> };
 type OtherRedirectSources = { [T in RedirectIndex]: RedirectSources[OtherRedirectIndices[T]] };
 type AllSources = RedirectSources[RedirectIndex];
 
@@ -51,31 +48,31 @@ type NoneReused = AllReused extends never ? true : never;
 const duplicatesAssertion: NoneReused = true;
 //***************************************************/
 
-
 //****Ensure that all redirect sources are valid*****/
 type InvalidSources = InvalidRedirectsFrom<AllSources>;
 type NoInvalidSources = InvalidSources extends never ? true : never;
 const invalidSourceAssertion: NoInvalidSources = true;
 //***************************************************/
 
-
 //****Ensure that Redirect interface is followed*****/
-type vals = typeof REDIRECTS[RedirectIndex];
-type t1 = Pick<vals, keyof Redirect>;
-type t2 = Pick<Redirect, keyof vals>;
-type tkey = Exclude<keyof vals & keyof Redirect, 'aliases'>;
+type RedirectConst = ElementOf<REDIRECTS_type>;
+type RedirectConstKeys = AllUnionMemberKeys<RedirectConst>;
 
-type textra<T extends tkey> = t1[T] extends t2[T] ? never : t1[T];
+type AllRedirectKeys = Exclude<RedirectConstKeys | keyof Redirect, 'aliases'>;
+type ConstTypeMatches<T extends AllRedirectKeys> = RedirectConst[T] extends Redirect[T] ? never : RedirectConst[T];
 
-type AnyBadValues = { [K in tkey]: textra<K> }[tkey];
+type AnyBadValues = { [K in AllRedirectKeys]: ConstTypeMatches<K> }[AllRedirectKeys];
 type NoBadValues = AnyBadValues extends never ? true : never;
 const badValuesAssertion: NoBadValues = true;
 //***************************************************/
 
-function filtered(flagName: keyof Redirect) {
-  return Object.fromEntries(Object.entries(REDIRECTS).filter(([,{[flagName]: flag}]) => flag));
+export function filtered<F extends keyof RedirectConst, V extends RedirectConst[F]>(flagName: F, value: V) {
+  type FilteredRedirect = Extract<RedirectConst, {[K in F]: V}>;
+  function filterFunc(redir: RedirectConst): redir is FilteredRedirect {
+    return redir[flagName] === value;
+  }
+  const filteredRedirects = REDIRECTS.filter(filterFunc);
+  return arrayAsReadonly(filteredRedirects as TuplifyUnion<ElementOf<typeof filteredRedirects>>);
 }
 
-export default REDIRECTS;
-export { REDIRECTS, filtered };
-export type { AllSources };
+export type {AllSources};
