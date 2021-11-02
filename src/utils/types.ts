@@ -1,5 +1,5 @@
 /** Type of the elements in an array */
-export type ElementOf<T> = T extends (infer E)[] ? E : T extends readonly (infer E)[] ? E : never;
+export type ElementOf<T> = T extends (infer E)[] ? E : T extends readonly (infer E)[] ? E : T extends ArrayLike<infer E> ? E : never;
 
 /** Used internally for `Tail`. */
 type AsFunctionWithArgsOf<T extends unknown[] | readonly unknown[]> = (...args: T) => any;
@@ -16,11 +16,19 @@ type AsDescendingLengths<T extends unknown[] | readonly unknown[]> =
     [ElementOf<ElementOf<AsDescendingLengths<Tail<T>>[]>>, T['length']];
 
 /** Union of numerical literals corresponding to a tuple's possible indices */
-export type IndicesOf<T extends unknown[] | readonly unknown[]> =
+export type IndicesOf<T extends ArrayLike<unknown>> =
     number extends T['length'] ? number :
     [] extends T ? never :
-    ElementOf<AsDescendingLengths<Tail<T>>>;
+    0 extends T['length'] ? never :
+    T extends unknown[] | readonly unknown[] ? ElementOf<AsDescendingLengths<Tail<T>>> :
+    keyof T extends 'length' ? never : keyof T;
 
+/** Used internally by AsReadonlyArr - get keys excluding indices and length */
+type ReadonlyArrayMethods = Omit<readonly any[], number|'length'>;
+
+/** Convert a record of number to item to a readonly array of those items */
+export type AsReadonlyArr<Items extends Record<number, unknown>, Length> = Items & ReadonlyArrayMethods & {length: Length};
+    
 /** Extract keys from each option in a union type */
 export type AllUnionMemberKeys<T> = T extends any ? keyof T : never;
 

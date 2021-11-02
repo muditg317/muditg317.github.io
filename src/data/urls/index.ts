@@ -22,7 +22,7 @@ type AllReused = { [K in Key]: ReusedSourcesFrom<K> }[Key];
 type ShouldNotBeNever = AllReused extends never ? any : never;
 const assertion: ShouldNotBeNever = null;
 
-const navPages = Object.entries(filteredPages("showOnNavBar")).map(pair => pair[1]);
+const navPages = filteredPages("showOnNavBar", true);
 const navRedirects = filteredRedirects("showOnNavBar", true);
 
 const navEntries = [...navPages, ...navRedirects] as const;
