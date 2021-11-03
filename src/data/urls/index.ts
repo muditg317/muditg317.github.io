@@ -1,35 +1,45 @@
 
-// import type {ElementOf} from '../utils/types';
-import { AllSources as AllPageSources, filtered as filteredPages } from "./pages";
-import type {AllSources as AllRedirectSources } from './redirects';
-import {filtered as filteredRedirects} from "./redirects";
+import type {InvalidPageAlias,     Page    } from "./pages";
+import type {InvalidRedirectAlias, Redirect} from './redirects';
+import {PAGES    , filtered as filteredPages,     excluding as pagesExcluding,     findWhere as pageWhere    } from "./pages";
+import {REDIRECTS, filtered as filteredRedirects, excluding as redirectsExcluding, where as redirectWhere} from "./redirects";
+import {EntryTypeUnion, GetTitles, } from "./types";
+import {typeCheckFn} from "./types";
+import { arrayAsReadonly } from "utils/type-modifiers";
+import type { TuplifyUnion, ElementOf } from "utils/types";
 
-type SourceSources = {
-  pages: AllPageSources;
-  redirects: AllRedirectSources;
+
+export {isEntryType} from './types';
+
+export {redirectsExcluding, pagesExcluding};
+const allEntries = [...PAGES, ...REDIRECTS] as const;
+typeCheckFn<typeof allEntries, EntryTypeUnion, InvalidRedirectAlias&InvalidPageAlias>(allEntries);
+export {REDIRECTS, PAGES};
+
+export type {Redirect, Page};
+export function page<T extends GetTitles<typeof PAGES, Page>>(pageTitle: T) {
+  // console.log(pageTitle);
+  // console.log(pageWhere);
+  return pageWhere('title', pageTitle);
+}
+export const defaultPage = pageWhere('isMainPage', true);
+// console.log(defaultPage);
+
+export function redirect<T extends GetTitles<typeof REDIRECTS, Redirect>>(redirectTitle: T) {
+  return redirectWhere('title', redirectTitle);
 }
 
-type Key = keyof SourceSources;
-type KeysExcept<T> = Exclude<Key, T>;
-
-type Sources<T extends Key> = SourceSources[T];
-type SourcesExcept<T extends Key> = Sources<KeysExcept<T>>;
-type AllSources = Sources<Key>;
-
-type ReusedSourcesFrom<T extends Key> = Extract<SourcesExcept<T>, Sources<T>>;
-
-type AllReused = { [K in Key]: ReusedSourcesFrom<K> }[Key];
-type ShouldNotBeNever = AllReused extends never ? any : never;
-const assertion: ShouldNotBeNever = null;
+export function filtered<Const extends EntryTypeUnion, L extends ReadonlyArray<Const>, F extends keyof Const, V extends Const[F]>(entries: readonly [...L], flagName: F, value: V) {
+  type FilteredEntry = Extract<ElementOf<L>, {[K in F]: V}>;
+  function filterFunc(entry: Const): entry is FilteredEntry {
+    return entry[flagName] === value;
+  }
+  const filteredEntries = entries.filter(filterFunc);
+  return arrayAsReadonly(filteredEntries as TuplifyUnion<ElementOf<typeof filteredEntries>>);
+}
 
 const navPages = filteredPages("showOnNavBar", true);
 const navRedirects = filteredRedirects("showOnNavBar", true);
+export const navEntries = [...navPages, ...navRedirects] as const;
 
-const navEntries = [...navPages, ...navRedirects] as const;
-// const navs = Object.fromEntries(navEntries);
-
-// const navItems = Object.assign({}, filteredPages("showOnNavBar"), filteredRedirects("showOnNavBar"));
-// type NavItem = typeof navItems[keyof typeof navItems];
-// type key = keyof NavItem;
-// navItems[]
-// export {navItems};
+// const nav = filtered(navEntries, 'showOnNavBar', true);

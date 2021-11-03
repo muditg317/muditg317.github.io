@@ -1,57 +1,44 @@
-import {AllUnionMemberKeys, ElementOf, IndicesOf, TuplifyUnion} from 'utils/types';
+import {ElementOf, TuplifyUnion} from 'utils/types';
 import {arrayAsReadonly} from 'utils/type-modifiers';
-import { MultiWord, UrlEntry } from './types';
+import type { GetAliases, MultiWord, UrlEntry } from './types';
+import {EntryType, typeCheckFn} from './types';
+import { Landing } from 'components/landing';
+import { AppFooter } from 'components/app/footer';
 
-type InvalidPagesFrom<T extends string> = T extends Exclude<T, MultiWord> ? never : T;
+export type InvalidPageAlias = MultiWord;
 
-type Page = UrlEntry<{
+// TODO: custom validator for pages
+export type Page = UrlEntry<{
   isMainPage: boolean;
+  mainAliasIndex: number;
+  component: (() => JSX.Element) | undefined;
+  entryType: EntryType.Page;
 }>;
 
 export const PAGES = [
   ({
     aliases: ['', 'main', 'home', 'landing'],
+    mainAliasIndex: 0,
     title: "Mudit Gupta",
-    showOnNavBar: true,
+    showOnNavBar: false,
     isMainPage: true,
+    component: Landing,
+    entryType: EntryType.Page,
+  }),
+  ({
+    aliases: ['about'],
+    mainAliasIndex: 0,
+    title: "About",
+    showOnNavBar: true,
+    isMainPage: false,
+    component: AppFooter,
+    entryType: EntryType.Page,
   }),
 ] as const;
+typeCheckFn<typeof PAGES, Page, InvalidPageAlias>(PAGES);
 
-
-//********Exclude duplicates from alias lists********/
-type ConstPages = typeof PAGES;
-type PageIndex = IndicesOf<ConstPages>;
-type OtherPageIndices = { [T in PageIndex]: Exclude<PageIndex, T> };
-
-type PageSources = { [T in PageIndex]: ElementOf<ConstPages[T]['aliases']> };
-type OtherPageSources = { [T in PageIndex]: PageSources[OtherPageIndices[T]] };
-type AllSources = PageSources[PageIndex];
-
-type ReusedSourcesFrom = { [T in PageIndex]: Extract<OtherPageSources[T], PageSources[T]> };
-type AllReused = ReusedSourcesFrom[PageIndex];
-
-type NoneReused = AllReused extends never ? true : never;
-const duplicatesAssertion: NoneReused = true;
-//***************************************************/
-
-//****Ensure that all page sources are valid*****/
-type InvalidSources = InvalidPagesFrom<AllSources>;
-type NoInvalidSources = InvalidSources extends never ? true : never;
-const invalidSourceAssertion: NoInvalidSources = true;
-//***************************************************/
-
-//****Ensure that Page interface is followed*****/
-type PageConst = ElementOf<ConstPages>;
-type PageConstKeys = AllUnionMemberKeys<PageConst>;
-
-type AllPageKeys = Exclude<PageConstKeys | keyof Page, 'aliases'>;
-type ConstTypeMatches<T extends AllPageKeys> = PageConst[T] extends Page[T] ? never : PageConst[T];
-
-type AnyBadValues = { [K in AllPageKeys]: ConstTypeMatches<K> }[AllPageKeys];
-type NoBadValues = AnyBadValues extends never ? true : never;
-const badValuesAssertion: NoBadValues = true;
-//***************************************************/
-
+export type ConstPages = typeof PAGES;
+export type PageConst = ElementOf<ConstPages>;
 export function filtered<F extends keyof PageConst, V extends PageConst[F]>(flagName: F, value: V) {
   type FilteredPage = Extract<PageConst, {[K in F]: V}>;
   function filterFunc(page: PageConst): page is FilteredPage {
@@ -60,5 +47,20 @@ export function filtered<F extends keyof PageConst, V extends PageConst[F]>(flag
   const filteredPages = PAGES.filter(filterFunc);
   return arrayAsReadonly(filteredPages as TuplifyUnion<ElementOf<typeof filteredPages>>);
 }
+export function excluding<F extends keyof PageConst, V extends PageConst[F]|undefined>(flagName: F, value: V) {
+  type FilteredPage = Exclude<PageConst, {[K in F]: V}>;
+  function filterFunc(page: PageConst): page is FilteredPage {
+    return page[flagName] !== value;
+  }
+  const filteredPages = PAGES.filter(filterFunc);
+  return arrayAsReadonly(filteredPages as TuplifyUnion<ElementOf<typeof filteredPages>>);
+}
+export function findWhere<F extends keyof PageConst, V extends PageConst[F]>(flagName: F, value: V) {
+  type FilteredPage = Extract<PageConst, {[K in F]: V}>;
+  function filterFunc(page: PageConst): page is FilteredPage {
+    return page[flagName] === value;
+  }
+  return PAGES.find(filterFunc)!;
+}
 
-export type {AllSources};
+export type AllSources = GetAliases<typeof PAGES>;

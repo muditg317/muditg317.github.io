@@ -82,3 +82,5 @@ export function Landing() {
     </div>
   </div>
 }
+
+// export const LandingPage = page("Mudit Gupta");

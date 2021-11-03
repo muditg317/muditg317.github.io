@@ -64,3 +64,6 @@ type TuplifyUnionHelper<
 
 /** Convert union type to tuple by repeatedly extracting last item */
 export type TuplifyUnion<T> = TuplifyUnionHelper<T>;
+
+/** Get all value types from object type - (key,value) pairs */
+export type ValueOf<T extends Record<any, unknown>> = T extends Record<infer K, unknown> ? T[K] : never;
