@@ -5,8 +5,6 @@ import { Helmet } from 'react-helmet';
 import {AppHeader} from './header';
 import {AppFooter} from './footer';
 
-// import {Landing, LandingPage} from 'components/landing';
-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -15,10 +13,6 @@ import { ExternalRedirect } from 'components/external-redirect';
 library.add(fas, far, fab);
 
 require('./hacks');
-
-// const reverseMapping: Map<Page, () => JSX.Element> = new Map([
-//   [LandingPage, Landing],
-// ]);
 
 export function App() {
   return (
@@ -44,11 +38,11 @@ export function App() {
             </Route>;
           })}
           <Route path='/'>
-            <Redirect to={`/${defaultPage.aliases[defaultPage.mainAliasIndex]}`} />
+            <Redirect to={`/${defaultPage.aliases[0]}`} />
           </Route>
         </Switch>
       </main>
-      <AppFooter />
+      <AppFooter className="absolute bottom-0" />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 
-import type {InvalidPageAlias,     Page    } from "./pages";
-import type {InvalidRedirectAlias, Redirect} from './redirects';
-import {PAGES    , filtered as filteredPages,     excluding as pagesExcluding,     findWhere as pageWhere    } from "./pages";
-import {REDIRECTS, filtered as filteredRedirects, excluding as redirectsExcluding, where as redirectWhere} from "./redirects";
+import type {InvalidPageAlias,     Page,     PageConst    } from "./pages";
+import type {InvalidRedirectAlias, Redirect, RedirectConst} from './redirects';
+import {PAGES,     excluding as pagesExcluding,     where as pageWhere    } from "./pages";
+import {REDIRECTS, excluding as redirectsExcluding, where as redirectWhere} from "./redirects";
 import {EntryTypeUnion, GetTitles, } from "./types";
 import {typeCheckFn} from "./types";
 import { arrayAsReadonly } from "utils/type-modifiers";
@@ -29,7 +29,7 @@ export function redirect<T extends GetTitles<typeof REDIRECTS, Redirect>>(redire
   return redirectWhere('title', redirectTitle);
 }
 
-export function filtered<Const extends EntryTypeUnion, L extends ReadonlyArray<Const>, F extends keyof Const, V extends Const[F]>(entries: readonly [...L], flagName: F, value: V) {
+export function filtered<Const extends EntryTypeUnion, L extends ReadonlyArray<Const> = ReadonlyArray<Const>, F extends keyof Const = keyof Const, V extends Const[F] = Const[F]>(entries: readonly [...L], flagName: F, value: V) {
   type FilteredEntry = Extract<ElementOf<L>, {[K in F]: V}>;
   function filterFunc(entry: Const): entry is FilteredEntry {
     return entry[flagName] === value;
@@ -37,9 +37,15 @@ export function filtered<Const extends EntryTypeUnion, L extends ReadonlyArray<C
   const filteredEntries = entries.filter(filterFunc);
   return arrayAsReadonly(filteredEntries as TuplifyUnion<ElementOf<typeof filteredEntries>>);
 }
+export function filteredPages<F extends keyof PageConst, V extends PageConst[F]>(flagName: F, value: V) {
+  return filtered<PageConst>(PAGES, flagName, value);
+}
+export function filteredRedirects<F extends keyof RedirectConst, V extends RedirectConst[F]>(flagName: F, value: V) {
+  return filtered<RedirectConst>(REDIRECTS, flagName, value);
+}
 
-const navPages = filteredPages("showOnNavBar", true);
-const navRedirects = filteredRedirects("showOnNavBar", true);
+export const navPages = filteredPages("showOnNavBar", true);
+export const navRedirects = filteredRedirects("showOnNavBar", true);
 export const navEntries = [...navPages, ...navRedirects] as const;
 
 // const nav = filtered(navEntries, 'showOnNavBar', true);

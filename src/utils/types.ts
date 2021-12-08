@@ -15,13 +15,19 @@ type AsDescendingLengths<T extends unknown[] | readonly unknown[]> =
     [] extends T ? [0] :
     [ElementOf<ElementOf<AsDescendingLengths<Tail<T>>[]>>, T['length']];
 
+/** Used to get index of an array as a string */
+export type StrIndicesOf<A> = Exclude<keyof A, keyof []>;
+type indexStrToNum = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49];
+// type SmartIndexOf<T extends readonly unknown[]> = indexStrToNum[StrIndicesOf<T>];
+
 /** Union of numerical literals corresponding to a tuple's possible indices */
 export type IndicesOf<T extends ArrayLike<unknown>> =
-    number extends T['length'] ? number :
-    [] extends T ? never :
-    0 extends T['length'] ? never :
-    T extends unknown[] | readonly unknown[] ? ElementOf<AsDescendingLengths<Tail<T>>> :
-    keyof T extends 'length' ? never : keyof T;
+    number extends T['length'] ? number : // unspecified length -> any number
+    // [] extends T ? never : // empty list
+    0 extends T['length'] ? never : // 0 length -> cannot index
+    T extends unknown[] | readonly unknown[] ? ElementOf<AsDescendingLengths<Tail<T>>> : // extract numeric indices up to length 44 (index 43)
+    keyof T extends 'length' ? never : // T only has length but no indices
+    keyof T; // cannot get actual indices -> any key of T
 
 /** Used internally by AsReadonlyArr - get keys excluding indices and length */
 type ReadonlyArrayMethods = Omit<readonly any[], number|'length'>;
