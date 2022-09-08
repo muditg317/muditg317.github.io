@@ -3,9 +3,9 @@ import {arrayAsReadonly} from 'utils/type-modifiers';
 import type { GetAliases, MultiWord, UrlEntry } from './types';
 import {EntryType, typeCheckFn} from './types';
 import { Landing } from 'components/landing';
-import { AppFooter } from 'components/app/footer';
 import { Projects } from 'components/projects';
 import { Blog } from 'components/blog';
+import { AboutPage } from 'components/about';
 
 export type InvalidPageAlias = MultiWord;
 
@@ -26,14 +26,6 @@ export const PAGES = [
     entryType: EntryType.Page,
   },
   {
-    aliases: ['about'],
-    title: "About",
-    showOnNavBar: true,
-    isMainPage: false,
-    component: AppFooter,
-    entryType: EntryType.Page,
-  },
-  {
     aliases: ['projects'],
     title: "Projects",
     showOnNavBar: true,
@@ -47,6 +39,14 @@ export const PAGES = [
     showOnNavBar: true,
     isMainPage: false,
     component: Blog,
+    entryType: EntryType.Page,
+  },
+  {
+    aliases: ['about'],
+    title: "About This Site",
+    showOnNavBar: true,
+    isMainPage: false,
+    component: AboutPage,
     entryType: EntryType.Page,
   },
 ] as const;

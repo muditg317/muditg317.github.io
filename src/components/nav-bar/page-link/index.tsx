@@ -15,7 +15,7 @@ function getClassName(isMainPage: boolean) {
 export function PageLink({page}: {page: Page}) {
   let children = page.isMainPage ? <MainPageLink page={page} /> : <>{page.title}</>;
   let className = getClassName(page.isMainPage);
-  return <NavLink to={`/${page.aliases[0]}`} className={className}  activeClassName="transform scale-125 ml-2 md:ml-0" isActive={(match, location) => (page.aliases as readonly string[]).includes(location.pathname.substring(1))}>
+  return <NavLink to={`/${page.aliases[0]}`} className={className}  activeClassName="transform scale-125 ml-2 md:ml-0" isActive={(match, location) => page.aliases.includes(location.pathname.substring(1))}>
     {children}
   </NavLink>;
 }

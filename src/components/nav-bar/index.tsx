@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, NavLinkProps } from "react-router-dom";
+import { useState, useEffect, useRef } from 'react';
 
-import {ReactComponent as Logo} from 'assets/images/logo.svg';
 import { ExternalLink } from 'components/external-link';
-import { defaultPage, isEntryType, navEntries, navPages } from 'data/urls';
+import { defaultPage, isEntryType, navEntries, navPages, navRedirects } from 'data/urls';
 import { EntryType } from 'data/urls/types';
-import { IndicesOf } from 'utils/types';
 import { PageLink } from './page-link';
 
 
@@ -13,17 +10,26 @@ export function NavBar() {
   const [ responsive, setResponsive ] = useState(false);
   const navBarRef = useRef(null);
 
+  const [ showRedirectBox, setShowRedirectBox ] = useState(false);
+  const redirectBoxLabelRef = useRef(null);
+
   useEffect(() => {
     function documentClickHandler(event: MouseEvent) {
-      if (responsive && navBarRef.current && event.target !== navBarRef.current) {
+      if (navBarRef.current && event.target !== navBarRef.current) {
         setResponsive(false);
+      }
+      if (redirectBoxLabelRef && event.target === redirectBoxLabelRef.current) {
+        setShowRedirectBox(b => !b);
+      }
+      if (redirectBoxLabelRef && event.target !== redirectBoxLabelRef.current) {
+        setShowRedirectBox(false);
       }
     }
     document.addEventListener("click", documentClickHandler);
     return () => {
       document.removeEventListener("click", documentClickHandler);
     }
-  }, [responsive]);
+  }, []);
 
   return (
     <nav ref={navBarRef} className="flex items-center justify-between flex-wrap bg-cyan-500 p-3 z-50">
@@ -41,7 +47,7 @@ export function NavBar() {
           {/* <ExternalLink to="https://muditgupta.appspot.com/game-lounge" title="Games" className="block mt-4 mb-4 md:mb-0 md:inline-block md:mt-0 text-white font-semibold text-xl hover:text-green-400 mr-4">
             Games
           </ExternalLink> */}
-          {/*navEntries.map(navEntry => {
+          {/* {navEntries.map(navEntry => {
             const props = {
               key: navEntry.title,
               title: navEntry.title,
@@ -51,17 +57,35 @@ export function NavBar() {
             } as const;
             // const LinkType = isEntryType(navEntry, EntryType.Page) ? Link : isEntryType(navEntry, EntryType.Redirect) ? ExternalLink : null;
             return (isEntryType(navEntry, EntryType.Page)
-              ? <NavLink {...props} to={navEntry.aliases[navEntry.mainAliasIndex]} activeClassName="transform scale-125" isActive={(match, location) => (navEntry.aliases as readonly string[]).includes(location.pathname.substring(1))}>
+              ? <NavLink {...props} to={navEntry.aliases[0]} activeClassName="transform scale-125" isActive={(match, location) => (navEntry.aliases as readonly string[]).includes(location.pathname.substring(1))}>
             </NavLink> : isEntryType(navEntry, EntryType.Redirect)
               ? <ExternalLink {...props} to={navEntry.target.href} className={`${props.className} justify-self-end`}>
             </ExternalLink> : null)!;
-          })*/}
+          })} */}
           {navPages.map(page => <PageLink key={page.title} page={page} />)}
         </div>
         <div>
-          <button className="ml-3 bg-transparent hover:bg-green-400 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded">
+          {/* <button className="ml-3 bg-transparent hover:bg-green-400 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded">
             Click me!
-          </button>
+          </button> */}
+          <div className="ml-3 flex flex-col group relative">
+            <button ref={redirectBoxLabelRef} className={`py-2 px-4 text-xl text-white font-semibold bg-transparent ${showRedirectBox ? "" : "group-hover:"}bg-cyan-400 rounded-t-lg`}>
+              Links&nbsp;
+              <span className={`text-sm transform ${showRedirectBox ? "" : "group-hover:"}-rotate-90`}>▼</span>
+              {/* <span className={`text-xs ${showRedirection ? "inline-block" : "hidden group-hover:inline-block"}`}>&#9650;</span> */}
+            </button>
+            <div className={`flex flex-col absolute top-full right-0 z-50 bg-cyan-400 w-max rounded-tl-lg rounded-b-lg ${showRedirectBox ? "flex" : "hidden group-hover:flex"}`}>
+              {navRedirects.map(redirect => 
+                <ExternalLink
+                    key={redirect.title}
+                    title={redirect.title}
+                    to={redirect.target.href}
+                    className="block px-3 py-1 first:pt-2 last:pb-2 first:rounded-tl-lg last:rounded-b-lg text-white font-semibold text-xl hover:bg-cyan-300 hover:text-green-400 transition-transform">
+                  {redirect.title}
+                </ExternalLink>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </nav>
