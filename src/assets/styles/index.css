@@ -4465,14 +4465,14 @@ body>div#root .min-h-fit {
   min-height: -moz-fit-content;
   min-height: fit-content;
 }
-body>div#root .w-64 {
-  width: 16rem;
-}
 body>div#root .w-full {
   width: 100%;
 }
 body>div#root .w-6 {
   width: 1.5rem;
+}
+body>div#root .w-64 {
+  width: 16rem;
 }
 body>div#root .w-3 {
   width: 0.75rem;
@@ -10347,13 +10347,13 @@ body>div#root .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
 }
-body>div#root .px-0 {
-  padding-left: 0px;
-  padding-right: 0px;
-}
 body>div#root .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
+}
+body>div#root .px-0 {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 body>div#root .px-2 {
   padding-left: 0.5rem;
@@ -10986,17 +10986,17 @@ body>div#root .font-serif {
 body>div#root .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-body>div#root .text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+body>div#root .text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 body>div#root .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
 }
-body>div#root .text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+body>div#root .text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 body>div#root .text-sm {
   font-size: 0.875rem;
@@ -11187,13 +11187,13 @@ body>div#root .tracking-wider {
 body>div#root .tracking-widest {
   letter-spacing: 0.1em;
 }
-body>div#root .text-green-300 {
-  --tw-text-opacity: 1;
-  color: rgb(134 239 172 / var(--tw-text-opacity));
-}
 body>div#root .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+body>div#root .text-green-300 {
+  --tw-text-opacity: 1;
+  color: rgb(134 239 172 / var(--tw-text-opacity));
 }
 body>div#root .text-white {
   --tw-text-opacity: 1;
@@ -13301,6 +13301,9 @@ body>div#root .delay-1000 {
 body>div#root .duration-\[350ms\] {
   transition-duration: 350ms;
 }
+body>div#root .duration-200 {
+  transition-duration: 200ms;
+}
 body>div#root .duration-75 {
   transition-duration: 75ms;
 }
@@ -13309,9 +13312,6 @@ body>div#root .duration-100 {
 }
 body>div#root .duration-150 {
   transition-duration: 150ms;
-}
-body>div#root .duration-200 {
-  transition-duration: 200ms;
 }
 body>div#root .duration-300 {
   transition-duration: 300ms;
@@ -13325,6 +13325,9 @@ body>div#root .duration-700 {
 body>div#root .duration-1000 {
   transition-duration: 1000ms;
 }
+body>div#root .ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
 body>div#root .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -13333,9 +13336,6 @@ body>div#root .ease-linear {
 }
 body>div#root .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-}
-body>div#root .ease-out {
-  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 body>div#root .first\:rounded-tl-lg:first-child {
   border-top-left-radius: 0.5rem;
