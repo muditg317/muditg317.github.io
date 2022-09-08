@@ -97,7 +97,7 @@ export function NavBar() {
                     key={redirect.title}
                     title={redirect.title}
                     to={redirect.target.href}
-                    className={`block px-3 py-1 first:pt-2 last:pb-2 ${responsive ? "" : "first:rounded-tl-lg"} last:rounded-b-lg text-white font-semibold text-xl hover:bg-cyan-300 hover:text-green-400 transition-transform`}>
+                    className={`block px-3 py-1 first:pt-2 last:pb-2 ${responsive ? "" : "first:rounded-tl-lg"} last:rounded-b-lg text-white font-semibold text-xl hover:bg-cyan-300 transition-transform`}>
                   {redirect.title}
                 </ExternalLink>
               )}

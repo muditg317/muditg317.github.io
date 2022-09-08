@@ -7,8 +7,12 @@ export type InvalidRedirectAlias = MultiWord|EmptyString;
 
 export enum RedirectGroup {
   QuickLinks = 'QuickLinks',
+  ResumeReferences = 'ResumeReferences',
 }
-export const RedirectGroups = [RedirectGroup.QuickLinks];
+export const RedirectGroups = [
+  RedirectGroup.QuickLinks,
+  RedirectGroup.ResumeReferences,
+] as const;
 
 
 export type Redirect = UrlEntry<{
@@ -18,6 +22,14 @@ export type Redirect = UrlEntry<{
 }>;
 
 export const REDIRECTS = [
+  ({
+    aliases: ['resume', 'muditgupta-resume', 'guptamudit-resume'],
+    title: "Resume",
+    target: new URL('https://tinyurl.com/muditgupta-resume'),
+    showOnNavBar: true,
+    group: RedirectGroup.QuickLinks,
+    entryType: EntryType.Redirect,
+  }),
   ({
     aliases: ['mungus', 'mungus-irl','among-us','amongus'],
     title: "Mungus-IRL",
@@ -32,6 +44,30 @@ export const REDIRECTS = [
     target: new URL('https://muditgupta.appspot.com/game-lounge'),
     showOnNavBar: true,
     group: RedirectGroup.QuickLinks,
+    entryType: EntryType.Redirect,
+  }),
+  ({
+    aliases: ['source', 'website-code', 'website-source', 'website-source-code'],
+    title: "Source Code",
+    target: new URL('https://github.com/muditg317/muditg317.github.io'),
+    showOnNavBar: false,
+    group: RedirectGroup.QuickLinks,
+    entryType: EntryType.Redirect,
+  }),
+  ({
+    aliases: ['vip', 'autolidar', 'autolidar-vip', 'vip-autolidar', 'automotive-lidar'],
+    title: "AutoLiDAR VIP",
+    target: new URL('https://vip.gatech.edu/teams/automotive-lidar'),
+    showOnNavBar: false,
+    group: RedirectGroup.ResumeReferences,
+    entryType: EntryType.Redirect,
+  }),
+  ({
+    aliases: ['farrt', 'fa-rrt', 'field-aided-rrt'],
+    title: "FA-RRT*",
+    target: new URL('https://github.com/ishanchadha01/Field-Aided-RRT'),
+    showOnNavBar: false,
+    group: RedirectGroup.ResumeReferences,
     entryType: EntryType.Redirect,
   }),
 ] as const;
