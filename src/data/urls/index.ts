@@ -6,7 +6,7 @@ import {REDIRECTS, excluding as redirectsExcluding, where as redirectWhere} from
 import {EntryTypeUnion, GetTitles, } from "./types";
 import {typeCheckFn} from "./types";
 import { arrayAsReadonly } from "utils/type-modifiers";
-import type { TuplifyUnion, ElementOf } from "utils/types";
+import type { TuplifyUnion, ElementOf, AsReadonlyArr, IndicesOf } from "utils/types";
 
 
 export {isEntryType} from './types';
@@ -48,4 +48,35 @@ export const navPages = filteredPages("showOnNavBar", true);
 export const navRedirects = filteredRedirects("showOnNavBar", true);
 export const navEntries = [...navPages, ...navRedirects] as const;
 
-// const nav = filtered(navEntries, 'showOnNavBar', true);
+// type Exact<A, B> = A extends B ? B extends A ? true : false : false
+// type EnforceExact<Constraint, T> = Exact<Constraint, T> extends true ? T : never
+// type EnforceNoExtras<Constraint, T> = Exclude<keyof T, keyof Constraint> extends never ? T : never;
+// type Entries<T> = {
+//   [K in keyof T]: [K, T[K]];
+// }[keyof T][];
+
+// export function multiFiltered<Const extends EntryTypeUnion, L extends ReadonlyArray<Const> = ReadonlyArray<Const>, FD extends Partial<Const> = Partial<Const>, ret extends TuplifyUnion<Extract<ElementOf<L>, FD>> = TuplifyUnion<Extract<ElementOf<L>, FD>>>(entries: readonly [...L], filter: EnforceNoExtras<Const, FD>) {
+//   type FilteredEntry = Extract<ElementOf<L>, FD>;
+//   function filterFunc(entry: Const): entry is FilteredEntry {
+//     type entryTypes = TuplifyUnion<ElementOf<Entries<FD>>>;
+//     type numTypes = LastOf<IndicesOf<TuplifyUnion<ElementOf<Entries<FD>>|{__UNIQUE__:{}}>>>;
+//     type typeArr = AsReadonlyArr<entryTypes,numTypes>;
+//     return (Object.entries(filter) as TuplifyUnion<ElementOf<Entries<FD>>> & ReadonlyArrayMethods).every(([key, value]) => entry[key] === value);
+//   }
+//   const filteredEntries = entries.filter(filterFunc);
+//   return filteredEntries as Readonly<ret>;
+//   // return arrayAsReadonly(filteredEntries as TuplifyUnion<FilteredEntry>);
+//   // return arrayAsReadonly(filteredEntries as TuplifyUnion<ElementOf<typeof filteredEntries>>);
+//   // return entries;
+// }
+
+// type MultiFilter = {
+//   showOnNavBar: true;
+//   isMinorPage: false;
+// }
+// type t = EnforceNoExtras<PageConst, MultiFilter>;
+// type d = TuplifyUnion<ElementOf<Entries<t>>>;
+// type k = LastOf<IndicesOf<TuplifyUnion<ElementOf<Entries<t>>|{__UNIQUE__:{}}>>>;
+// type l = AsReadonlyArr<d,k>;
+
+// const navPagesMinorOnly = multiFiltered<PageConst>(PAGES, {showOnNavBar: true, isMinorPage: true});

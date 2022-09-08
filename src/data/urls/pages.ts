@@ -12,6 +12,7 @@ export type InvalidPageAlias = MultiWord;
 // TODO: custom validator for pages
 export type Page = UrlEntry<{
   isMainPage: boolean;
+  isMinorPage: boolean;
   component: ((...args: any[]) => JSX.Element) | undefined;
   entryType: EntryType.Page;
 }>;
@@ -22,6 +23,7 @@ export const PAGES = [
     title: "Mudit Gupta",
     showOnNavBar: false,
     isMainPage: true,
+    isMinorPage: false,
     component: Landing,
     entryType: EntryType.Page,
   },
@@ -30,6 +32,7 @@ export const PAGES = [
     title: "Projects",
     showOnNavBar: true,
     isMainPage: false,
+    isMinorPage: false,
     component: Projects,
     entryType: EntryType.Page,
   },
@@ -38,6 +41,7 @@ export const PAGES = [
     title: "Blog?",
     showOnNavBar: true,
     isMainPage: false,
+    isMinorPage: false,
     component: Blog,
     entryType: EntryType.Page,
   },
@@ -46,6 +50,7 @@ export const PAGES = [
     title: "About This Site",
     showOnNavBar: true,
     isMainPage: false,
+    isMinorPage: true,
     component: AboutPage,
     entryType: EntryType.Page,
   },

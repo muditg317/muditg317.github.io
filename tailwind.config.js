@@ -82,16 +82,6 @@ module.exports = {
       },
     },
   },
-  variants: {
-    extend: {
-      backgroundColor: ['odd'],
-      borderRadius: ['first', 'last'],
-      display: ['group-hover'],
-      margin: ['first', 'last'],
-      padding: ['first', 'last'],
-      textColor: ['odd'],
-    }
-  },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
   ],
