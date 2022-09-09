@@ -4,15 +4,9 @@ import {ExternalLink} from 'components/external-link';
 import { Page } from 'components/reusable/page';
 import {Card} from 'components/reusable/card';
 
-import profilePic from 'assets/images/linkedin-pic.jpg';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-const farEnvelope: IconProp = ['far','envelope'];
-const fabGithub: IconProp = ['fab','github'];
-const fabLinkedIn: IconProp = ['fab','linkedin'];
 const fasCode: IconProp = ['fas','code'];
-
-
 
 export function AboutPage() {
   return <Page>

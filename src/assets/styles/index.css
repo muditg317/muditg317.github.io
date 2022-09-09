@@ -370,6 +370,7 @@ video {
   
   body {
     margin: 0;
+    overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
@@ -1632,9 +1633,6 @@ body>div#root .inset-y-half {
   top: 50%;
   bottom: 50%;
 }
-body>div#root .bottom-0 {
-  bottom: 0px;
-}
 body>div#root .top-full {
   top: 100%;
 }
@@ -1643,6 +1641,9 @@ body>div#root .right-0 {
 }
 body>div#root .top-0 {
   top: 0px;
+}
+body>div#root .bottom-0 {
+  bottom: 0px;
 }
 body>div#root .top-1 {
   top: 0.25rem;
@@ -4452,11 +4453,11 @@ body>div#root .max-h-screen {
 body>div#root .max-h-fit-borders {
   max-height: calc(100vh - 120px);
 }
-body>div#root .min-h-0 {
-  min-height: 0px;
-}
 body>div#root .min-h-full {
   min-height: 100%;
+}
+body>div#root .min-h-0 {
+  min-height: 0px;
 }
 body>div#root .min-h-screen {
   min-height: 100vh;
@@ -5237,12 +5238,16 @@ body>div#root .-translate-y-full {
   --tw-translate-y: -100%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-body>div#root .-rotate-90 {
-  --tw-rotate: -90deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
 body>div#root .rotate-0 {
   --tw-rotate: 0deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+body>div#root .rotate-90 {
+  --tw-rotate: 90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+body>div#root .-rotate-90 {
+  --tw-rotate: -90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 body>div#root .rotate-1 {
@@ -5267,10 +5272,6 @@ body>div#root .rotate-12 {
 }
 body>div#root .rotate-45 {
   --tw-rotate: 45deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-body>div#root .rotate-90 {
-  --tw-rotate: 90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 body>div#root .rotate-135 {
@@ -13378,6 +13379,10 @@ body>div#root .group:hover .group-hover\:inline-block {
 }
 body>div#root .group:hover .group-hover\:flex {
   display: flex;
+}
+body>div#root .group:hover .group-hover\:rotate-0 {
+  --tw-rotate: 0deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 body>div#root .group:hover .group-hover\:-rotate-90 {
   --tw-rotate: -90deg;

@@ -21,28 +21,30 @@ export function App() {
         <title>Mudit Gupta</title>
       </Helmet>
       <AppHeader />
-      <main className='flex-grow z-10'>
-        <Switch>
-          {pagesExcluding('component', undefined).map(page => {
-            const pathNames = page.aliases.map(path => '/'+path);
-            // console.log(pathNames);
-            return <Route key={page.title} exact={page.isMainPage} path={pathNames}>
-              <page.component />
-            </Route>;
-          })}
-          {REDIRECTS.map(redirect => {
-            const pathNames = redirect.aliases.map(path => '/'+path);
-            // console.log(pathNames, redirect.target);
-            return <Route key={redirect.title} path={pathNames}>
-              <ExternalRedirect target={redirect.target} />
-            </Route>;
-          })}
-          <Route path='/'>
-            <Redirect to={`/${defaultPage.aliases[0]}`} />
-          </Route>
-        </Switch>
-      </main>
-      <AppFooter className="absolute bottom-0" />
+      <div className='flex-grow overflow-auto flex flex-col'>
+        <main className='flex-grow z-10'>
+          <Switch>
+            {pagesExcluding('component', undefined).map(page => {
+              const pathNames = page.aliases.map(path => '/'+path);
+              // console.log(pathNames);
+              return <Route key={page.title} exact={page.isMainPage} path={pathNames}>
+                <page.component />
+              </Route>;
+            })}
+            {REDIRECTS.map(redirect => {
+              const pathNames = redirect.aliases.map(path => '/'+path);
+              // console.log(pathNames, redirect.target);
+              return <Route key={redirect.title} path={pathNames}>
+                <ExternalRedirect target={redirect.target} />
+              </Route>;
+            })}
+            <Route path='/'>
+              <Redirect to={`/${defaultPage.aliases[0]}`} />
+            </Route>
+          </Switch>
+        </main>
+        <AppFooter className="" />
+      </div>
     </div>
   );
 }
