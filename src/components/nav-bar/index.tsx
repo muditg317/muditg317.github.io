@@ -67,7 +67,7 @@ export function NavBar() {
         </div>
         <div>
           <div className="flex flex-col group relative">
-            <button ref={redirectBoxLabelRef} onClick={() => setClickedInRedirectBox(s=>!s)} className={`py-2 px-4 text-xl text-white font-semibold bg-transparent ${showRedirectBox ? "bg-cyan-400" : "group-hover:bg-cyan-400"} rounded-t-lg`}>
+            <button ref={redirectBoxLabelRef} onClick={() => setClickedInRedirectBox(s=>!s)} className={`py-2 px-4 text-xl text-white font-semibold bg-transparent ${showRedirectBox ? "bg-cyan-400" : "group-hover:bg-cyan-400"} border border-b-0 ${(clickedInRedirectBox && !responsive ? "border-white" : "border-transparent")} rounded-t-lg`}>
               Links&nbsp;
               <FontAwesomeIcon icon={fasDownAngle} size='1x' className="w-4" />
             </button>
